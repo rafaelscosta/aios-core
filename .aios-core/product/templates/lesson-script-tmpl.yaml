@@ -1,0 +1,387 @@
+# Lesson Script Template
+# Instituto Brasileiro de Cura Pelas Mãos
+
+name: lesson-script-tmpl
+version: 1.0.0
+description: Template for creating engaging video lesson scripts for online courses
+category: education
+output_format: markdown
+language: pt-BR
+
+metadata:
+  business: Instituto Brasileiro de Cura Pelas Mãos
+  expert: Natália Tanaka
+  style: Didática, prática, acolhedora
+  format: Video aulas para Hotmart
+
+# ============================================================================
+# ELICITATION QUESTIONS
+# ============================================================================
+elicitation:
+  required:
+    - id: course_name
+      prompt: "Qual é o nome do curso?"
+      type: text
+
+    - id: module_name
+      prompt: "Qual é o nome do módulo?"
+      type: text
+
+    - id: lesson_title
+      prompt: "Qual é o título da aula?"
+      type: text
+
+    - id: lesson_objective
+      prompt: "O que o aluno vai aprender nesta aula?"
+      type: text
+
+    - id: lesson_type
+      prompt: "Qual é o tipo da aula?"
+      type: choice
+      options:
+        - Teórica (conceitos)
+        - Prática (demonstração)
+        - Mista (teoria + prática)
+        - Revisão
+        - Bônus
+
+  optional:
+    - id: target_duration
+      prompt: "Duração alvo da aula?"
+      type: choice
+      options:
+        - Curta (5-10 min)
+        - Média (10-20 min)
+        - Longa (20-30 min)
+      default: "Média (10-20 min)"
+
+    - id: prerequisites
+      prompt: "Quais aulas anteriores são pré-requisitos?"
+      type: text
+
+    - id: materials_needed
+      prompt: "Materiais necessários para a aula prática?"
+      type: text
+
+# ============================================================================
+# LESSON STRUCTURE
+# ============================================================================
+sections:
+  # --------------------------------------------------------------------------
+  # SECTION 1: HOOK (0-30 seconds)
+  # --------------------------------------------------------------------------
+  - id: hook
+    name: "1. HOOK - Abertura"
+    duration: "0-30 segundos"
+    purpose: "Capturar atenção e contextualizar"
+    instructions: |
+      Crie uma abertura que:
+      - Conecte com o que o aluno já sabe
+      - Crie expectativa para o que vai aprender
+      - Mostre a relevância prática
+
+    elements:
+      - greeting: "Saudação breve e calorosa"
+      - context: "Onde estamos no curso"
+      - promise: "O que vai aprender nesta aula"
+      - relevance: "Por que isso é importante"
+
+    example: |
+      "Olá! Bem-vindo de volta.
+      Hoje você vai aprender a técnica que mais gera resultados
+      imediatos com seus clientes: a liberação dos pontos gatilhos.
+
+      Essa é a técnica que vai fazer seu cliente sair falando
+      'nunca senti um alívio assim antes'."
+
+  # --------------------------------------------------------------------------
+  # SECTION 2: OVERVIEW (30s - 1min)
+  # --------------------------------------------------------------------------
+  - id: overview
+    name: "2. OVERVIEW - Visão Geral"
+    duration: "30 segundos - 1 minuto"
+    purpose: "Dar um mapa do que será coberto"
+    instructions: |
+      Apresente um roadmap claro:
+      - Liste os tópicos principais
+      - Diga quanto tempo vai levar
+      - Mencione se há parte prática
+
+    elements:
+      - topics: "3-5 pontos principais"
+      - duration: "Duração estimada"
+      - format: "O que esperar (teoria, prática, exercício)"
+
+    example: |
+      "Nesta aula, vamos cobrir:
+      1. O que são pontos gatilhos e por que eles causam dor
+      2. Como identificar os pontos mais comuns
+      3. A técnica de liberação passo a passo
+
+      Depois da explicação, vou demonstrar na prática.
+      Reserve cerca de 15 minutos para esta aula."
+
+  # --------------------------------------------------------------------------
+  # SECTION 3: CONTENT (Main body)
+  # --------------------------------------------------------------------------
+  - id: content
+    name: "3. CONTEÚDO - Corpo Principal"
+    duration: "Variável (maior parte da aula)"
+    purpose: "Entregar o conhecimento principal"
+    instructions: |
+      Estruture o conteúdo em blocos:
+      - Divida em 3-5 pontos principais
+      - Cada ponto: conceito → exemplo → aplicação
+      - Use analogias e histórias
+      - Faça pausas para reflexão
+
+    subsections:
+      - id: concept
+        name: "Conceito/Teoria"
+        elements:
+          - definition: "O que é"
+          - why_matters: "Por que importa"
+          - common_mistakes: "Erros comuns"
+
+      - id: demonstration
+        name: "Demonstração Prática"
+        elements:
+          - setup: "Preparação"
+          - step_by_step: "Passo a passo"
+          - tips: "Dicas importantes"
+          - variations: "Variações possíveis"
+
+      - id: application
+        name: "Aplicação"
+        elements:
+          - when_to_use: "Quando usar"
+          - real_cases: "Casos reais"
+          - adaptations: "Como adaptar"
+
+    teaching_techniques:
+      - chunking: "Dividir em partes pequenas"
+      - scaffolding: "Construir sobre o conhecido"
+      - repetition: "Repetir pontos-chave"
+      - examples: "Usar exemplos concretos"
+      - stories: "Contar histórias de casos"
+
+  # --------------------------------------------------------------------------
+  # SECTION 4: PRACTICE (If applicable)
+  # --------------------------------------------------------------------------
+  - id: practice
+    name: "4. PRÁTICA - Demonstração"
+    duration: "3-10 minutos (se aplicável)"
+    purpose: "Mostrar na prática como fazer"
+    instructions: |
+      Para aulas com demonstração prática:
+      - Mostre a técnica em tempo real
+      - Narre o que está fazendo
+      - Destaque pontos de atenção
+      - Mostre ângulos diferentes
+
+    elements:
+      - preparation: "O que preparar antes"
+      - demonstration: "Execução da técnica"
+      - narration: "Explicação durante execução"
+      - close_ups: "Detalhes importantes"
+      - common_errors: "O que evitar"
+
+    example: |
+      "[B-roll: Natália preparando a maca]
+
+      Primeiro, vou posicionar o cliente em decúbito ventral.
+      Observe como encontro o ponto gatilho aqui no trapézio...
+
+      [Close-up das mãos]
+
+      Sinto uma nodulação... é aqui.
+      Agora aplico pressão gradual...
+      Veja: não é força bruta, é pressão sustentada."
+
+  # --------------------------------------------------------------------------
+  # SECTION 5: SUMMARY (1-2 minutes)
+  # --------------------------------------------------------------------------
+  - id: summary
+    name: "5. RESUMO - Recapitulação"
+    duration: "1-2 minutos"
+    purpose: "Consolidar o aprendizado"
+    instructions: |
+      Faça uma recapitulação:
+      - Repita os 3-5 pontos principais
+      - Reforce as dicas mais importantes
+      - Conecte com o próximo passo
+
+    elements:
+      - key_points: "Pontos principais aprendidos"
+      - quick_tips: "Dicas para lembrar"
+      - mistakes_to_avoid: "Erros para evitar"
+
+    example: |
+      "Então, recapitulando o que vimos hoje:
+
+      1. Pontos gatilhos são nós de tensão que causam dor referida
+      2. Identificamos pela palpação e resposta do cliente
+      3. A técnica de liberação usa pressão sustentada, não força
+
+      Lembre-se: menos é mais. Comece suave e aumente gradualmente."
+
+  # --------------------------------------------------------------------------
+  # SECTION 6: CALL TO ACTION (30 seconds)
+  # --------------------------------------------------------------------------
+  - id: cta
+    name: "6. CTA - Próximo Passo"
+    duration: "30 segundos"
+    purpose: "Direcionar para ação e próxima aula"
+    instructions: |
+      Encerre com direcionamento claro:
+      - Dê um exercício ou tarefa prática
+      - Indique a próxima aula
+      - Convide para a comunidade
+      - Encerre com motivação
+
+    elements:
+      - homework: "Exercício para praticar"
+      - next_lesson: "O que vem a seguir"
+      - community: "Convite para interação"
+      - motivation: "Palavras de encorajamento"
+
+    example: |
+      "Agora é sua vez: pratique essa técnica em você mesmo
+      ou em alguém próximo. Sinta como é encontrar o ponto.
+
+      Na próxima aula, vamos aprender os pontos gatilhos
+      mais comuns nas costas - você não vai querer perder!
+
+      Qualquer dúvida, me encontra na comunidade.
+      Você está indo muito bem. Continue! Até a próxima."
+
+# ============================================================================
+# PRODUCTION NOTES
+# ============================================================================
+production:
+  video_formats:
+    talking_head: "Natália falando para câmera"
+    demonstration: "Demonstração prática de técnica"
+    slides: "Apresentação com slides"
+    screencast: "Gravação de tela"
+    mixed: "Combinação de formatos"
+
+  camera_angles:
+    wide: "Plano aberto - contexto geral"
+    medium: "Plano médio - apresentação"
+    close_up: "Close - detalhes das mãos/técnica"
+    pov: "Ponto de vista do terapeuta"
+
+  audio:
+    - Microfone de lapela
+    - Ambiente silencioso
+    - Narração clara e pausada
+    - Música de fundo sutil (opcional)
+
+  graphics:
+    - Lower thirds com nome/título
+    - Bullet points para resumos
+    - Setas/círculos para destacar
+    - Anatomia ilustrada quando necessário
+
+# ============================================================================
+# OUTPUT FORMAT
+# ============================================================================
+output_template: |
+  # Roteiro de Aula
+
+  **Curso:** {{course_name}}
+  **Módulo:** {{module_name}}
+  **Aula:** {{lesson_title}}
+  **Duração:** {{target_duration}}
+  **Tipo:** {{lesson_type}}
+
+  ---
+
+  ## Objetivo da Aula
+  {{lesson_objective}}
+
+  ## Materiais Necessários
+  {{materials_needed}}
+
+  ## Pré-requisitos
+  {{prerequisites}}
+
+  ---
+
+  ## ROTEIRO COMPLETO
+
+  ### 1. HOOK (0:00 - 0:30)
+
+  **[Talking head - Natália para câmera]**
+
+  {{hook_script}}
+
+  ---
+
+  ### 2. OVERVIEW (0:30 - 1:00)
+
+  **[Slide com bullet points]**
+
+  {{overview_script}}
+
+  ---
+
+  ### 3. CONTEÚDO PRINCIPAL (1:00 - X:00)
+
+  #### Ponto 1: {{topic_1}}
+
+  **[Formato: {{format}}]**
+
+  {{content_1}}
+
+  **Transição:** {{transition_1}}
+
+  #### Ponto 2: {{topic_2}}
+
+  {{content_2}}
+
+  [Continua para cada ponto...]
+
+  ---
+
+  ### 4. DEMONSTRAÇÃO PRÁTICA (se aplicável)
+
+  **[B-roll + narração]**
+
+  {{demonstration_script}}
+
+  ---
+
+  ### 5. RESUMO (X:00 - X:00)
+
+  **[Talking head ou slide]**
+
+  {{summary_script}}
+
+  ---
+
+  ### 6. CTA E ENCERRAMENTO
+
+  **[Talking head]**
+
+  {{cta_script}}
+
+  ---
+
+  ## Notas de Produção
+
+  **Câmera:** {{camera_notes}}
+  **Áudio:** {{audio_notes}}
+  **Gráficos:** {{graphics_notes}}
+  **B-roll:** {{broll_notes}}
+
+  ---
+
+  ## Checklist de Gravação
+
+  - [ ] Equipamentos testados
+  - [ ] Ambiente preparado
+  - [ ] Roteiro revisado
+  - [ ] Materiais à mão
+  - [ ] Figurino ok

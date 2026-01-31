@@ -1,0 +1,403 @@
+# VSL (Video Sales Letter) Script Template
+# Instituto Brasileiro de Cura Pelas Mãos
+
+name: vsl-script-tmpl
+version: 1.0.0
+description: Template for creating high-converting Video Sales Letter scripts
+category: sales
+output_format: markdown
+language: pt-BR
+
+metadata:
+  business: Instituto Brasileiro de Cura Pelas Mãos
+  expert: Natália Tanaka
+  tone: Empática, profissional, transformadora
+  duration_target: "15-45 minutes"
+
+# ============================================================================
+# ELICITATION QUESTIONS
+# ============================================================================
+elicitation:
+  required:
+    - id: product_name
+      prompt: "Qual é o nome do produto?"
+      type: text
+
+    - id: product_type
+      prompt: "Que tipo de produto é?"
+      type: choice
+      options:
+        - Curso online
+        - Mentoria
+        - Workshop
+        - Manual/E-book
+        - Evento
+
+    - id: price
+      prompt: "Qual é o preço?"
+      type: text
+
+    - id: target_audience
+      prompt: "Quem é o público-alvo específico?"
+      type: text
+
+    - id: main_problem
+      prompt: "Qual é o principal problema que o produto resolve?"
+      type: text
+
+    - id: main_transformation
+      prompt: "Qual é a principal transformação prometida?"
+      type: text
+
+  optional:
+    - id: bonus
+      prompt: "Quais são os bônus incluídos?"
+      type: text
+
+    - id: guarantee
+      prompt: "Qual é a garantia oferecida?"
+      type: text
+      default: "7 dias de garantia incondicional"
+
+    - id: urgency
+      prompt: "Qual elemento de urgência usar?"
+      type: choice
+      options:
+        - Vagas limitadas
+        - Preço promocional por tempo limitado
+        - Bônus por tempo limitado
+        - Turma fecha em breve
+
+# ============================================================================
+# TEMPLATE STRUCTURE
+# ============================================================================
+sections:
+  # --------------------------------------------------------------------------
+  # SECTION 1: HOOK (0-2 minutes)
+  # --------------------------------------------------------------------------
+  - id: hook
+    name: "1. HOOK - Gancho Inicial"
+    duration: "0-2 minutos"
+    purpose: "Capturar atenção imediatamente"
+    instructions: |
+      Crie um gancho poderoso que:
+      - Faça uma promessa ousada baseada na transformação
+      - Conecte com a dor principal do público
+      - Crie curiosidade suficiente para continuar assistindo
+
+    elements:
+      - pattern_interrupt: "Frase ou pergunta que quebra o padrão"
+      - bold_promise: "Promessa principal do produto"
+      - curiosity_hook: "Elemento que gera curiosidade"
+
+    example: |
+      "E se eu te dissesse que você pode lotar sua agenda de massagem
+      em menos de 30 dias, mesmo sem experiência com marketing digital?"
+
+  # --------------------------------------------------------------------------
+  # SECTION 2: PROBLEM (2-5 minutes)
+  # --------------------------------------------------------------------------
+  - id: problem
+    name: "2. PROBLEMA - Agitação da Dor"
+    duration: "2-5 minutos"
+    purpose: "Fazer o espectador sentir a dor do problema"
+    instructions: |
+      Descreva o problema de forma visceral:
+      - Liste sintomas do problema que o público vive
+      - Mostre as consequências de não resolver
+      - Faça o espectador se identificar profundamente
+
+    elements:
+      - symptoms: "Lista de sintomas do problema"
+      - consequences: "O que acontece se não resolver"
+      - emotional_connection: "Frases de identificação"
+      - common_mistakes: "Erros comuns que agravam"
+
+    example: |
+      "Você acorda todo dia pensando: de onde vai vir o próximo cliente?
+      Fica olhando a agenda vazia, sentindo aquele aperto no peito...
+      Será que eu fiz a escolha errada?"
+
+  # --------------------------------------------------------------------------
+  # SECTION 3: AUTHORITY (5-8 minutes)
+  # --------------------------------------------------------------------------
+  - id: authority
+    name: "3. AUTORIDADE - Credibilidade"
+    duration: "5-8 minutos"
+    purpose: "Estabelecer por que Natália é a pessoa certa para ensinar"
+    instructions: |
+      Construa credibilidade através de:
+      - História de origem (jornada de Natália)
+      - Resultados alcançados pessoalmente
+      - Resultados de alunos
+      - Números e provas sociais
+
+    elements:
+      - origin_story: "De onde Natália veio e como chegou aqui"
+      - personal_results: "Resultados próprios"
+      - student_results: "Resultados de alunos"
+      - social_proof: "Números, depoimentos, mídia"
+
+    example: |
+      "Há 10 anos eu estava exatamente onde você está agora.
+      Agenda vazia, contas para pagar, pensando em desistir.
+      Hoje, já formei mais de 5.000 massoterapeutas..."
+
+  # --------------------------------------------------------------------------
+  # SECTION 4: SOLUTION (8-15 minutes)
+  # --------------------------------------------------------------------------
+  - id: solution
+    name: "4. SOLUÇÃO - O Método"
+    duration: "8-15 minutos"
+    purpose: "Apresentar a solução única"
+    instructions: |
+      Apresente o método/produto como a solução:
+      - Nomeie o método de forma memorável
+      - Explique os pilares/módulos principais
+      - Mostre por que é diferente de outras soluções
+      - Dê uma prévia do conteúdo
+
+    elements:
+      - method_name: "Nome do método/produto"
+      - unique_mechanism: "Por que funciona"
+      - pillars: "Pilares ou módulos principais"
+      - differentiation: "O que torna único"
+      - content_preview: "O que está incluído"
+
+    example: |
+      "É por isso que eu criei o Método Cura Pelas Mãos.
+      Um sistema completo baseado em 3 pilares:
+      1. Técnica - As manobras que realmente funcionam
+      2. Conexão - Como criar vínculo com o cliente
+      3. Negócio - Como transformar sua técnica em renda"
+
+  # --------------------------------------------------------------------------
+  # SECTION 5: SOCIAL PROOF (15-20 minutes)
+  # --------------------------------------------------------------------------
+  - id: social_proof
+    name: "5. PROVA SOCIAL - Depoimentos"
+    duration: "15-20 minutos"
+    purpose: "Mostrar que funciona para pessoas reais"
+    instructions: |
+      Apresente provas sociais variadas:
+      - Depoimentos em vídeo de alunos
+      - Resultados específicos com números
+      - Antes e depois
+      - Variedade de perfis de alunos
+
+    elements:
+      - video_testimonials: "Depoimentos em vídeo"
+      - specific_results: "Resultados com números"
+      - before_after: "Histórias de transformação"
+      - variety: "Diferentes perfis de sucesso"
+
+    example: |
+      "A Maria era auxiliar de enfermagem e em 6 meses
+      já estava faturando R$8.000 por mês só com massagem.
+      O Pedro largou o emprego CLT e hoje tem 3 funcionários..."
+
+  # --------------------------------------------------------------------------
+  # SECTION 6: OFFER (20-25 minutes)
+  # --------------------------------------------------------------------------
+  - id: offer
+    name: "6. OFERTA - Apresentação do Produto"
+    duration: "20-25 minutos"
+    purpose: "Apresentar exatamente o que está incluso"
+    instructions: |
+      Detalhe a oferta completa:
+      - Módulos e conteúdos
+      - Bônus
+      - Suporte e comunidade
+      - Construa valor antes de revelar preço
+
+    elements:
+      - main_product: "Produto principal com módulos"
+      - bonuses: "Bônus que complementam"
+      - support: "Tipo de suporte oferecido"
+      - community: "Acesso à comunidade"
+      - value_stack: "Soma do valor de tudo"
+
+    example: |
+      "Aqui está tudo que você vai receber:
+      ✅ Método Cura Pelas Mãos Completo (valor R$1.997)
+      ✅ Bônus 1: Manual dos Pontos Gatilhos (valor R$297)
+      ✅ Bônus 2: Mentoria em grupo mensal (valor R$497)
+      ✅ Bônus 3: Comunidade exclusiva (valor R$197)
+
+      Valor total: R$2.988"
+
+  # --------------------------------------------------------------------------
+  # SECTION 7: PRICE & GUARANTEE (25-30 minutes)
+  # --------------------------------------------------------------------------
+  - id: price
+    name: "7. PREÇO E GARANTIA"
+    duration: "25-30 minutos"
+    purpose: "Revelar preço e eliminar risco"
+    instructions: |
+      Apresente o preço de forma estratégica:
+      - Compare com o valor total construído
+      - Mostre o preço como investimento
+      - Apresente opções de pagamento
+      - Ofereça garantia forte para eliminar risco
+
+    elements:
+      - price_reveal: "Revelação do preço"
+      - payment_options: "Opções de pagamento"
+      - guarantee: "Garantia oferecida"
+      - risk_reversal: "Inversão de risco"
+
+    example: |
+      "De R$2.988 por apenas 12x de R$97 ou R$997 à vista.
+
+      E você ainda tem 7 dias de garantia incondicional.
+      Se não gostar, devolvemos 100% do seu dinheiro.
+      Risco zero para você."
+
+  # --------------------------------------------------------------------------
+  # SECTION 8: URGENCY & SCARCITY (30-35 minutes)
+  # --------------------------------------------------------------------------
+  - id: urgency
+    name: "8. URGÊNCIA E ESCASSEZ"
+    duration: "30-35 minutos"
+    purpose: "Criar razão para agir agora"
+    instructions: |
+      Crie urgência legítima:
+      - Explique por que a oferta é limitada
+      - Mostre o que perdem se esperarem
+      - Use contagem regressiva se aplicável
+
+    elements:
+      - scarcity_reason: "Por que é limitado"
+      - deadline: "Prazo da oferta"
+      - loss_aversion: "O que perdem se não agirem"
+
+    example: |
+      "Essa condição especial só está disponível até sexta-feira.
+      Depois disso, os bônus saem e o preço volta ao normal.
+
+      E mais: as primeiras 50 matrículas ganham uma sessão
+      de mentoria individual comigo."
+
+  # --------------------------------------------------------------------------
+  # SECTION 9: FAQ & OBJECTIONS (35-40 minutes)
+  # --------------------------------------------------------------------------
+  - id: faq
+    name: "9. FAQ - Quebrando Objeções"
+    duration: "35-40 minutos"
+    purpose: "Responder dúvidas e quebrar objeções"
+    instructions: |
+      Antecipe e responda objeções comuns:
+      - "Não tenho tempo"
+      - "Não tenho dinheiro"
+      - "Não sei se funciona para mim"
+      - "Já tentei outras coisas"
+
+    elements:
+      - time_objection: "Resposta para falta de tempo"
+      - money_objection: "Resposta para falta de dinheiro"
+      - doubt_objection: "Resposta para dúvida se funciona"
+      - past_failures: "Resposta para tentativas anteriores"
+
+    example: |
+      "Você pode estar pensando: 'Mas eu não tenho tempo...'
+      O método foi desenhado para quem trabalha.
+      São aulas de 15 minutos que você assiste no seu ritmo."
+
+  # --------------------------------------------------------------------------
+  # SECTION 10: FINAL CTA (40-45 minutes)
+  # --------------------------------------------------------------------------
+  - id: final_cta
+    name: "10. CTA FINAL - Chamada para Ação"
+    duration: "40-45 minutos"
+    purpose: "Fechar com chamada clara para ação"
+    instructions: |
+      Encerre com chamada poderosa:
+      - Resuma a transformação
+      - Reforce a garantia
+      - Dê instruções claras
+      - Crie senso de decisão (agora ou nunca)
+
+    elements:
+      - transformation_summary: "Resumo da transformação"
+      - guarantee_reminder: "Lembrete da garantia"
+      - clear_instructions: "Como clicar e comprar"
+      - final_push: "Última motivação"
+
+    example: |
+      "A decisão é sua. Você pode continuar como está,
+      com a agenda vazia, se perguntando o que fazer...
+
+      Ou você pode dar o primeiro passo agora,
+      clicar no botão abaixo e começar sua transformação.
+
+      Lembrando: você tem 7 dias para experimentar sem risco.
+
+      Clica no botão, faz sua inscrição e vamos juntos!"
+
+# ============================================================================
+# OUTPUT FORMAT
+# ============================================================================
+output_template: |
+  # VSL Script: {{product_name}}
+
+  **Duração estimada:** {{duration}}
+  **Público-alvo:** {{target_audience}}
+  **Transformação principal:** {{main_transformation}}
+
+  ---
+
+  ## 1. HOOK (0-2 min)
+  {{hook_content}}
+
+  ---
+
+  ## 2. PROBLEMA (2-5 min)
+  {{problem_content}}
+
+  ---
+
+  ## 3. AUTORIDADE (5-8 min)
+  {{authority_content}}
+
+  ---
+
+  ## 4. SOLUÇÃO (8-15 min)
+  {{solution_content}}
+
+  ---
+
+  ## 5. PROVA SOCIAL (15-20 min)
+  {{social_proof_content}}
+
+  ---
+
+  ## 6. OFERTA (20-25 min)
+  {{offer_content}}
+
+  ---
+
+  ## 7. PREÇO E GARANTIA (25-30 min)
+  {{price_content}}
+
+  ---
+
+  ## 8. URGÊNCIA (30-35 min)
+  {{urgency_content}}
+
+  ---
+
+  ## 9. FAQ (35-40 min)
+  {{faq_content}}
+
+  ---
+
+  ## 10. CTA FINAL (40-45 min)
+  {{cta_content}}
+
+  ---
+
+  ## Notas de Produção
+
+  - **Enquadramentos sugeridos:** Close, médio, B-roll
+  - **Gráficos necessários:** Value stack, timer de urgência
+  - **Depoimentos a inserir:** {{testimonials_list}}

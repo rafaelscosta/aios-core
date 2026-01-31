@@ -1,0 +1,408 @@
+# Content Campaign Workflow
+# Instituto Brasileiro de Cura Pelas Mãos - Organic Content Strategy
+
+name: content-campaign
+version: 1.0.0
+description: Workflow for planning and executing content campaigns across social media
+
+trigger:
+  command: "*create-campaign"
+  agents:
+    - social-media
+    - content-creator
+    - copywriter
+
+metadata:
+  business: Instituto Brasileiro de Cura Pelas Mãos
+  expert: Natália Tanaka
+  handle: '@nataliamtanaka'
+  platforms:
+    primary:
+      - Instagram
+      - YouTube
+      - TikTok
+    secondary:
+      - Facebook
+      - Pinterest
+      - Threads
+  content_pillars:
+    - Técnicas de massoterapia
+    - Dicas para massoterapeutas
+    - Bastidores e lifestyle
+    - Depoimentos de alunos
+    - Dor e tratamento
+
+# ============================================================================
+# PHASE 1: STRATEGY & PLANNING
+# ============================================================================
+phases:
+  - id: strategy
+    name: "Phase 1: Strategy & Planning"
+    duration: "1-2 days"
+    lead_agent: social-media
+
+    steps:
+      - id: define-objective
+        agent: social-media
+        action: Define campaign objective
+        elicitation:
+          - What is the campaign goal? (awareness, engagement, leads, sales)
+          - What product or offer is this supporting?
+          - Campaign duration?
+        outputs:
+          - campaign-objective.md
+
+      - id: audience-analysis
+        agent: social-media
+        action: Analyze target audience and trends
+        command: "*analyze-trends"
+        outputs:
+          - audience-trends.md
+
+      - id: content-pillars
+        agent: social-media
+        action: Define content pillars for campaign
+        command: "*create-content-pillar"
+        depends_on: [define-objective]
+        outputs:
+          - content-pillars.md
+
+      - id: create-calendar
+        agent: social-media
+        action: Create content calendar
+        command: "*create-calendar"
+        depends_on: [content-pillars]
+        outputs:
+          - content-calendar.md
+
+    completion:
+      checklist:
+        - Campaign objective clear
+        - Audience and trends analyzed
+        - Content pillars defined
+        - Calendar created
+      next_phase: content-creation
+
+# ============================================================================
+# PHASE 2: CONTENT CREATION
+# ============================================================================
+  - id: content-creation
+    name: "Phase 2: Content Creation"
+    duration: "3-5 days"
+    lead_agent: content-creator
+
+    steps:
+      - id: create-reels
+        agent: social-media
+        action: Create Reels/TikTok scripts
+        command: "*create-reels"
+        outputs:
+          - reels-scripts.md
+
+      - id: create-carousels
+        agent: social-media
+        action: Create carousel content
+        command: "*create-carousel"
+        outputs:
+          - carousel-content.md
+
+      - id: create-stories
+        agent: social-media
+        action: Create Stories sequences
+        command: "*create-stories"
+        outputs:
+          - stories-sequences.md
+
+      - id: create-youtube
+        agent: content-creator
+        action: Create YouTube video scripts (if applicable)
+        command: "*create-youtube-script"
+        outputs:
+          - youtube-scripts.md
+
+      - id: create-captions
+        agent: copywriter
+        action: Write captions and CTAs
+        outputs:
+          - captions.md
+
+      - id: research-hashtags
+        agent: social-media
+        action: Research hashtags
+        command: "*research-hashtags"
+        outputs:
+          - hashtag-sets.md
+
+    completion:
+      checklist:
+        - Reels scripts ready
+        - Carousel content designed
+        - Stories planned
+        - Captions written
+        - Hashtags researched
+      next_phase: production
+
+# ============================================================================
+# PHASE 3: PRODUCTION
+# ============================================================================
+  - id: production
+    name: "Phase 3: Production"
+    duration: "2-4 days"
+    lead_agent: content-creator
+
+    steps:
+      - id: record-reels
+        action: Record Reels/TikTok videos
+        notes: |
+          - Use scripts as guide
+          - Follow trending formats
+          - Maintain Natália's authentic style
+        outputs:
+          - raw-reels/
+
+      - id: design-carousels
+        action: Design carousel graphics
+        tools: Canva
+        outputs:
+          - carousel-designs/
+
+      - id: create-thumbnails
+        action: Create thumbnails and covers
+        outputs:
+          - thumbnails/
+
+      - id: edit-content
+        action: Edit and finalize content
+        outputs:
+          - final-content/
+
+    completion:
+      checklist:
+        - Reels recorded and edited
+        - Carousels designed
+        - Thumbnails ready
+        - All content finalized
+      next_phase: scheduling
+
+# ============================================================================
+# PHASE 4: SCHEDULING & PUBLISHING
+# ============================================================================
+  - id: scheduling
+    name: "Phase 4: Scheduling & Publishing"
+    duration: "1 day"
+    lead_agent: social-media
+
+    steps:
+      - id: schedule-posts
+        agent: social-media
+        action: Schedule posts according to calendar
+        outputs:
+          - schedule-confirmation.md
+
+      - id: prepare-stories
+        agent: social-media
+        action: Prepare daily stories content
+        outputs:
+          - stories-schedule.md
+
+      - id: cross-post
+        agent: social-media
+        action: Adapt and schedule for secondary platforms
+        outputs:
+          - cross-post-schedule.md
+
+    completion:
+      checklist:
+        - All posts scheduled
+        - Stories prepared
+        - Cross-posting planned
+      next_phase: engagement
+
+# ============================================================================
+# PHASE 5: ENGAGEMENT & OPTIMIZATION
+# ============================================================================
+  - id: engagement
+    name: "Phase 5: Engagement & Optimization"
+    duration: "Throughout campaign"
+    lead_agent: social-media
+
+    steps:
+      - id: daily-engagement
+        agent: social-media
+        action: Daily community engagement
+        notes: |
+          - Respond to comments within 1 hour
+          - Engage with followers' content
+          - Answer DMs promptly
+        outputs:
+          - engagement-log.md
+
+      - id: monitor-metrics
+        agent: social-media
+        action: Monitor performance metrics
+        outputs:
+          - metrics-report.md
+
+      - id: optimize-content
+        agent: social-media
+        action: Optimize based on performance
+        depends_on: [monitor-metrics]
+        outputs:
+          - optimization-notes.md
+
+      - id: repurpose-winners
+        agent: social-media
+        action: Repurpose top-performing content
+        depends_on: [monitor-metrics]
+        outputs:
+          - repurpose-plan.md
+
+    completion:
+      checklist:
+        - Daily engagement maintained
+        - Metrics monitored
+        - Optimizations applied
+        - Winners repurposed
+      next_phase: analysis
+
+# ============================================================================
+# PHASE 6: ANALYSIS & LEARNING
+# ============================================================================
+  - id: analysis
+    name: "Phase 6: Analysis & Learning"
+    duration: "1 day (end of campaign)"
+    lead_agent: social-media
+
+    steps:
+      - id: compile-metrics
+        agent: social-media
+        action: Compile final metrics report
+        outputs:
+          - final-metrics.md
+
+      - id: identify-insights
+        agent: social-media
+        action: Identify key insights and learnings
+        outputs:
+          - campaign-insights.md
+
+      - id: document-winners
+        agent: social-media
+        action: Document winning content formats
+        outputs:
+          - winning-formats.md
+
+      - id: plan-next
+        agent: social-media
+        action: Recommendations for next campaign
+        outputs:
+          - next-campaign-recommendations.md
+
+    completion:
+      checklist:
+        - Final metrics compiled
+        - Insights documented
+        - Winners recorded
+        - Next steps planned
+
+# ============================================================================
+# WORKFLOW DIAGRAM
+# ============================================================================
+diagram: |
+  ```mermaid
+  graph TD
+      subgraph "Phase 1: Strategy"
+          A[Define Objective] --> B[Audience Analysis]
+          B --> C[Content Pillars]
+          C --> D[Calendar]
+      end
+
+      subgraph "Phase 2: Creation"
+          E[Reels Scripts] --> F[Carousels]
+          F --> G[Stories]
+          G --> H[Captions & Hashtags]
+      end
+
+      subgraph "Phase 3: Production"
+          I[Record Reels] --> J[Design Graphics]
+          J --> K[Thumbnails]
+          K --> L[Edit & Finalize]
+      end
+
+      subgraph "Phase 4: Publishing"
+          M[Schedule Posts] --> N[Prepare Stories]
+          N --> O[Cross-Post]
+      end
+
+      subgraph "Phase 5: Engagement"
+          P[Daily Engagement] --> Q[Monitor Metrics]
+          Q --> R[Optimize]
+          R --> S[Repurpose Winners]
+      end
+
+      subgraph "Phase 6: Analysis"
+          T[Compile Metrics] --> U[Identify Insights]
+          U --> V[Document Winners]
+          V --> W[Plan Next]
+      end
+
+      D --> E
+      H --> I
+      L --> M
+      O --> P
+      S --> T
+  ```
+
+# ============================================================================
+# CONTENT FORMAT TEMPLATES
+# ============================================================================
+formats:
+  reels:
+    hook: "0-3 seconds - grab attention"
+    content: "3-20 seconds - deliver value"
+    cta: "20-30 seconds - call to action"
+    optimal_length: "15-30 seconds"
+    trending_styles:
+      - Before/After
+      - POV narratives
+      - Quick tips
+      - Demonstrations
+      - Story time
+
+  carousel:
+    slide_1: "Hook slide (stop the scroll)"
+    slides_2_8: "Value content"
+    slide_9: "Summary or recap"
+    slide_10: "CTA"
+    optimal_slides: "7-10"
+
+  stories:
+    sequence:
+      - "Opening hook"
+      - "Context/problem"
+      - "Solution/tip"
+      - "Demonstration"
+      - "CTA (poll, question, swipe up)"
+    optimal_stories: "5-7 per sequence"
+
+# ============================================================================
+# METRICS & KPIs
+# ============================================================================
+kpis:
+  reach:
+    - Impressions
+    - Reach
+    - Profile visits
+  engagement:
+    - Likes
+    - Comments
+    - Shares
+    - Saves
+    - Engagement rate
+  growth:
+    - Follower growth
+    - Non-follower reach
+  conversion:
+    - Link clicks
+    - DMs received
+    - Leads generated

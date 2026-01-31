@@ -1,0 +1,300 @@
+# Email Sequence Template
+# Instituto Brasileiro de Cura Pelas Mãos
+
+name: email-sequence-tmpl
+version: 1.0.0
+description: Template for creating high-converting email sequences for launches and nurturing
+category: email-marketing
+output_format: markdown
+language: pt-BR
+
+metadata:
+  business: Instituto Brasileiro de Cura Pelas Mãos
+  expert: Natália Tanaka
+  platform: ActiveCampaign
+  tone: Empática, profissional, conversacional
+
+# ============================================================================
+# ELICITATION QUESTIONS
+# ============================================================================
+elicitation:
+  required:
+    - id: sequence_type
+      prompt: "Qual tipo de sequência?"
+      type: choice
+      options:
+        - Launch (lançamento)
+        - Nurture (nutrição)
+        - Onboarding (boas-vindas)
+        - Cart Recovery (recuperação de carrinho)
+        - Re-engagement (reengajamento)
+
+    - id: product_name
+      prompt: "Qual produto está sendo promovido?"
+      type: text
+
+    - id: sequence_goal
+      prompt: "Qual é o objetivo principal da sequência?"
+      type: text
+
+    - id: num_emails
+      prompt: "Quantos emails na sequência?"
+      type: number
+      default: 7
+
+  optional:
+    - id: launch_dates
+      prompt: "Quais são as datas do lançamento?"
+      type: text
+
+    - id: special_offer
+      prompt: "Qual oferta especial está sendo promovida?"
+      type: text
+
+# ============================================================================
+# SEQUENCE TYPES
+# ============================================================================
+sequence_types:
+  launch:
+    name: "Sequência de Lançamento"
+    description: "Emails para aquecer e converter durante um lançamento"
+    typical_length: 7-10 emails
+    structure:
+      - day_-7: "Antecipação 1 - Problema"
+      - day_-5: "Antecipação 2 - Solução existe"
+      - day_-3: "Antecipação 3 - Apresentação"
+      - day_-1: "Antecipação 4 - Prova social"
+      - day_0: "Abertura do carrinho"
+      - day_1: "Conteúdo + lembrete"
+      - day_3: "Objeções + depoimentos"
+      - day_5: "Última chance - urgência"
+      - day_6: "Fechamento - scarcity"
+      - day_7: "Encerramento final"
+
+  nurture:
+    name: "Sequência de Nutrição"
+    description: "Emails para educar e criar relacionamento"
+    typical_length: 5-7 emails
+    structure:
+      - email_1: "Boas-vindas + entrega do lead magnet"
+      - email_2: "Conteúdo de valor 1"
+      - email_3: "História pessoal"
+      - email_4: "Conteúdo de valor 2"
+      - email_5: "Case study/depoimento"
+      - email_6: "Conteúdo de valor 3"
+      - email_7: "Soft CTA para produto"
+
+  onboarding:
+    name: "Sequência de Onboarding"
+    description: "Emails para novos alunos"
+    typical_length: 5-7 emails
+    structure:
+      - email_1: "Boas-vindas + acesso"
+      - email_2: "Primeiros passos"
+      - email_3: "Dica para aproveitar melhor"
+      - email_4: "Convite para comunidade"
+      - email_5: "Check-in - como está indo?"
+      - email_6: "Recurso adicional"
+      - email_7: "Celebração de marco"
+
+  cart_recovery:
+    name: "Recuperação de Carrinho"
+    description: "Emails para quem abandonou o checkout"
+    typical_length: 3-4 emails
+    structure:
+      - email_1: "1h depois - Esqueceu algo?"
+      - email_2: "24h depois - Ainda está pensando?"
+      - email_3: "48h depois - Última chance"
+      - email_4: "72h depois - Oferta especial"
+
+# ============================================================================
+# EMAIL TEMPLATES BY TYPE
+# ============================================================================
+templates:
+  # --------------------------------------------------------------------------
+  # LAUNCH SEQUENCE
+  # --------------------------------------------------------------------------
+  launch:
+    - id: anticipation_1
+      name: "Antecipação 1 - O Problema"
+      day: -7
+      subject_lines:
+        - "Você também sente isso?"
+        - "A verdade que ninguém te conta sobre {{niche}}"
+        - "Por que sua agenda continua vazia?"
+      structure:
+        hook: "Pergunta ou afirmação que ressoa com a dor"
+        problem: "Descrição visceral do problema"
+        agitation: "Consequências de não resolver"
+        tease: "Algo está mudando... (curiosidade)"
+        cta: "Responda este email me contando sua experiência"
+
+    - id: anticipation_2
+      name: "Antecipação 2 - A Solução Existe"
+      day: -5
+      subject_lines:
+        - "Descobri algo que mudou tudo"
+        - "E se existisse um caminho diferente?"
+        - "A virada de chave que eu precisava"
+      structure:
+        hook: "Referência ao email anterior"
+        story: "Mini história de descoberta"
+        hope: "Apresentar que existe solução"
+        proof: "Pequena prova de que funciona"
+        tease: "Vou revelar tudo em breve"
+        cta: "Fique de olho na sua caixa de entrada"
+
+    - id: cart_open
+      name: "Abertura do Carrinho"
+      day: 0
+      subject_lines:
+        - "Está aberto! [VAGAS LIMITADAS]"
+        - "Chegou a hora: {{product_name}}"
+        - "Sua vaga está esperando"
+      structure:
+        hook: "Anúncio empolgante"
+        recap: "Resumo do que é o produto"
+        benefits: "3-5 principais benefícios"
+        offer: "O que está incluso"
+        price: "Preço e condições"
+        urgency: "Por que agir agora"
+        cta: "Botão claro para compra"
+        ps: "Lembrete de garantia"
+
+    - id: last_chance
+      name: "Última Chance"
+      day: 6
+      subject_lines:
+        - "ÚLTIMA CHANCE - fecha em 24h"
+        - "Amanhã acaba. Você vai ficar de fora?"
+        - "Só mais 24 horas..."
+      structure:
+        hook: "Urgência real"
+        recap: "O que está perdendo"
+        testimonial: "Depoimento rápido"
+        objection: "Quebra de objeção final"
+        countdown: "Contagem regressiva"
+        cta: "Botão urgente"
+        ps: "Garantia + bônus que some"
+
+  # --------------------------------------------------------------------------
+  # NURTURE SEQUENCE
+  # --------------------------------------------------------------------------
+  nurture:
+    - id: welcome
+      name: "Boas-vindas"
+      day: 0
+      subject_lines:
+        - "Bem-vindo(a)! Seu {{lead_magnet}} está aqui"
+        - "Olá! Aqui está o que você pediu"
+        - "Chegou! + uma surpresa pra você"
+      structure:
+        hook: "Boas-vindas calorosas"
+        delivery: "Link para o lead magnet"
+        quick_win: "Dica para aplicar imediatamente"
+        about: "Breve apresentação de Natália"
+        next: "O que esperar nos próximos emails"
+        cta: "Baixe agora / Responda com dúvidas"
+
+    - id: value_1
+      name: "Conteúdo de Valor 1"
+      day: 2
+      subject_lines:
+        - "A técnica que meus alunos mais amam"
+        - "Isso vai mudar sua forma de {{action}}"
+        - "Dica rápida que funciona"
+      structure:
+        hook: "Pergunta ou situação comum"
+        content: "Dica prática e aplicável"
+        example: "Exemplo real de aplicação"
+        result: "Resultado esperado"
+        cta: "Teste e me conta / Responda"
+
+    - id: story
+      name: "História Pessoal"
+      day: 4
+      subject_lines:
+        - "Quando eu quase desisti..."
+        - "A história que eu nunca contei"
+        - "Por que eu faço o que faço"
+      structure:
+        hook: "Início intrigante"
+        struggle: "Momento de dificuldade"
+        turning_point: "O que mudou tudo"
+        lesson: "Lição aprendida"
+        connection: "Conectar com o leitor"
+        cta: "Compartilhe sua história"
+
+# ============================================================================
+# EMAIL WRITING GUIDELINES
+# ============================================================================
+guidelines:
+  subject_lines:
+    - Keep under 50 characters when possible
+    - Use personalization tokens
+    - Create curiosity or urgency
+    - Avoid spam trigger words
+    - A/B test variations
+
+  formatting:
+    - Short paragraphs (1-3 sentences)
+    - One main idea per email
+    - Mobile-friendly design
+    - Clear single CTA
+    - Use white space
+
+  tone:
+    - Conversational, like writing to a friend
+    - Empathetic to struggles
+    - Confident but not arrogant
+    - Personal stories when relevant
+    - Authentic Natália voice
+
+  technical:
+    - Preview text optimization
+    - Alt text on images
+    - Fallback fonts
+    - Unsubscribe link
+    - Physical address (legal requirement)
+
+# ============================================================================
+# OUTPUT FORMAT
+# ============================================================================
+output_template: |
+  # Sequência de Emails: {{sequence_type}}
+
+  **Produto:** {{product_name}}
+  **Objetivo:** {{sequence_goal}}
+  **Número de emails:** {{num_emails}}
+  **Plataforma:** ActiveCampaign
+
+  ---
+
+  ## Email 1: {{email_1_name}}
+
+  **Dia:** {{day}}
+  **Assunto:** {{subject_line}}
+  **Preview:** {{preview_text}}
+
+  **Corpo do email:**
+
+  {{email_body}}
+
+  **CTA:** {{cta_text}}
+  **Link:** {{cta_link}}
+
+  **Tags para adicionar:** {{tags}}
+  **Automação:** {{automation_trigger}}
+
+  ---
+
+  [Repetir para cada email da sequência]
+
+  ---
+
+  ## Configurações de Automação
+
+  **Trigger:** {{trigger}}
+  **Delays entre emails:** {{delays}}
+  **Condições de saída:** {{exit_conditions}}
+  **Tags finais:** {{final_tags}}

@@ -1,0 +1,359 @@
+# Course Creation Workflow
+# Instituto Brasileiro de Cura Pelas Mãos - Course Development
+
+name: course-creation
+version: 1.0.0
+description: Complete workflow for creating online courses from concept to delivery
+
+trigger:
+  command: "*create-course"
+  agents:
+    - content-creator
+    - copywriter
+    - student-success
+
+metadata:
+  business: Instituto Brasileiro de Cura Pelas Mãos
+  course_types:
+    - Full Method (e.g., Método Cura Pelas Mãos)
+    - Mini-Course
+    - Workshop
+    - Manual/E-book
+    - Mentoring Program
+  platforms:
+    delivery: Hotmart
+    content: Google Drive, Canva
+    video: YouTube (unlisted), Vimeo
+
+# ============================================================================
+# PHASE 1: CONCEPT & PLANNING
+# ============================================================================
+phases:
+  - id: concept
+    name: "Phase 1: Concept & Planning"
+    duration: "1-2 weeks"
+    lead_agent: content-creator
+
+    steps:
+      - id: define-transformation
+        agent: content-creator
+        action: Define student transformation (before → after)
+        elicitation:
+          - What problem does this course solve?
+          - What will students be able to do after completing?
+          - Who is the ideal student?
+        outputs:
+          - transformation-definition.md
+
+      - id: create-outline
+        agent: content-creator
+        action: Create course outline with modules
+        command: "*create-course-outline"
+        depends_on: [define-transformation]
+        outputs:
+          - course-outline.md
+
+      - id: define-milestones
+        agent: student-success
+        action: Define learning milestones and assessments
+        command: "*create-milestone"
+        depends_on: [create-outline]
+        outputs:
+          - learning-milestones.md
+
+    completion:
+      checklist:
+        - Transformation clearly defined
+        - Course outline approved
+        - Milestones and assessments defined
+      next_phase: content-development
+
+# ============================================================================
+# PHASE 2: CONTENT DEVELOPMENT
+# ============================================================================
+  - id: content-development
+    name: "Phase 2: Content Development"
+    duration: "2-4 weeks per module"
+    lead_agent: content-creator
+
+    steps:
+      - id: create-modules
+        agent: content-creator
+        action: Create detailed module structure
+        command: "*create-module"
+        repeat: for_each_module
+        outputs:
+          - module-{n}-structure.md
+
+      - id: create-lessons
+        agent: content-creator
+        action: Create lesson scripts with teaching notes
+        command: "*create-lesson"
+        depends_on: [create-modules]
+        repeat: for_each_lesson
+        outputs:
+          - lesson-{n}-script.md
+
+      - id: create-exercises
+        agent: content-creator
+        action: Create practical exercises
+        command: "*create-exercise"
+        depends_on: [create-lessons]
+        outputs:
+          - exercises.md
+
+      - id: create-materials
+        agent: content-creator
+        action: Create supporting materials (PDFs, checklists)
+        depends_on: [create-lessons]
+        outputs:
+          - supporting-materials/
+
+    completion:
+      checklist:
+        - All modules structured
+        - All lesson scripts written
+        - Exercises created
+        - Supporting materials ready
+      next_phase: production
+
+# ============================================================================
+# PHASE 3: PRODUCTION
+# ============================================================================
+  - id: production
+    name: "Phase 3: Production"
+    duration: "1-2 weeks per module"
+    lead_agent: content-creator
+
+    steps:
+      - id: record-videos
+        action: Record video lessons
+        notes: |
+          - Use lesson scripts as teleprompter guide
+          - Follow Natália's teaching style
+          - Include practical demonstrations
+        outputs:
+          - raw-videos/
+
+      - id: edit-videos
+        action: Edit and polish videos
+        depends_on: [record-videos]
+        outputs:
+          - edited-videos/
+
+      - id: create-thumbnails
+        action: Create lesson thumbnails
+        depends_on: [edit-videos]
+        outputs:
+          - thumbnails/
+
+      - id: finalize-materials
+        action: Finalize PDFs and downloadable materials
+        outputs:
+          - final-materials/
+
+    completion:
+      checklist:
+        - All videos recorded
+        - Videos edited and polished
+        - Thumbnails created
+        - Materials finalized
+      next_phase: platform-setup
+
+# ============================================================================
+# PHASE 4: PLATFORM SETUP
+# ============================================================================
+  - id: platform-setup
+    name: "Phase 4: Platform Setup"
+    duration: "1 week"
+    lead_agent: content-creator
+
+    steps:
+      - id: upload-content
+        action: Upload videos and materials to Hotmart
+        outputs:
+          - content-upload-log.md
+
+      - id: configure-modules
+        action: Configure module structure in Hotmart
+        depends_on: [upload-content]
+        outputs:
+          - module-config.md
+
+      - id: setup-drip
+        action: Setup content drip schedule (if applicable)
+        depends_on: [configure-modules]
+        outputs:
+          - drip-schedule.md
+
+      - id: create-quizzes
+        agent: content-creator
+        action: Create quizzes and assessments
+        command: "*create-quiz"
+        outputs:
+          - quizzes.md
+
+    completion:
+      checklist:
+        - Content uploaded
+        - Modules configured
+        - Drip schedule set
+        - Quizzes created
+      next_phase: sales-preparation
+
+# ============================================================================
+# PHASE 5: SALES PREPARATION
+# ============================================================================
+  - id: sales-preparation
+    name: "Phase 5: Sales Preparation"
+    duration: "1-2 weeks"
+    lead_agent: copywriter
+
+    steps:
+      - id: create-sales-page
+        agent: copywriter
+        action: Create sales page copy
+        command: "*create-sales-page"
+        outputs:
+          - sales-page-copy.md
+
+      - id: create-vsl
+        agent: content-creator
+        action: Create VSL script
+        command: "*create-vsl"
+        outputs:
+          - vsl-script.md
+
+      - id: setup-checkout
+        action: Configure Hotmart checkout
+        outputs:
+          - checkout-config.md
+
+      - id: setup-pricing
+        action: Configure pricing and payment options
+        outputs:
+          - pricing-config.md
+
+    completion:
+      checklist:
+        - Sales page ready
+        - VSL created
+        - Checkout configured
+        - Pricing set
+      next_phase: student-experience
+
+# ============================================================================
+# PHASE 6: STUDENT EXPERIENCE
+# ============================================================================
+  - id: student-experience
+    name: "Phase 6: Student Experience"
+    duration: "1 week"
+    lead_agent: student-success
+
+    steps:
+      - id: create-onboarding
+        agent: student-success
+        action: Create student onboarding sequence
+        command: "*create-onboarding"
+        outputs:
+          - onboarding-sequence.md
+
+      - id: setup-community
+        agent: student-success
+        action: Setup community space
+        outputs:
+          - community-setup.md
+
+      - id: create-support-flow
+        agent: student-success
+        action: Create support FAQ and flow
+        outputs:
+          - support-flow.md
+
+      - id: plan-graduation
+        agent: student-success
+        action: Plan graduation/certification
+        command: "*create-graduation"
+        outputs:
+          - graduation-plan.md
+
+    completion:
+      checklist:
+        - Onboarding sequence ready
+        - Community space configured
+        - Support flow defined
+        - Graduation planned
+      next_phase: launch-ready
+
+# ============================================================================
+# WORKFLOW DIAGRAM
+# ============================================================================
+diagram: |
+  ```mermaid
+  graph TD
+      subgraph "Phase 1: Concept"
+          A[Define Transformation] --> B[Course Outline]
+          B --> C[Learning Milestones]
+      end
+
+      subgraph "Phase 2: Development"
+          D[Create Modules] --> E[Create Lessons]
+          E --> F[Create Exercises]
+          F --> G[Support Materials]
+      end
+
+      subgraph "Phase 3: Production"
+          H[Record Videos] --> I[Edit Videos]
+          I --> J[Thumbnails]
+          J --> K[Finalize Materials]
+      end
+
+      subgraph "Phase 4: Platform"
+          L[Upload Content] --> M[Configure Modules]
+          M --> N[Setup Drip]
+          N --> O[Create Quizzes]
+      end
+
+      subgraph "Phase 5: Sales"
+          P[Sales Page] --> Q[VSL]
+          Q --> R[Checkout]
+          R --> S[Pricing]
+      end
+
+      subgraph "Phase 6: Experience"
+          T[Onboarding] --> U[Community]
+          U --> V[Support]
+          V --> W[Graduation]
+      end
+
+      C --> D
+      G --> H
+      K --> L
+      O --> P
+      S --> T
+  ```
+
+# ============================================================================
+# COURSE STRUCTURE TEMPLATE
+# ============================================================================
+structure_template:
+  module:
+    - name: "Módulo {n}: {title}"
+    - objective: What students will learn
+    - lessons:
+        - lesson_title
+        - duration
+        - type: video | practical | quiz
+    - materials:
+        - PDF summary
+        - Checklist
+        - Worksheet
+    - assessment: Quiz or practical exercise
+
+  lesson:
+    - hook: Attention-grabbing opening
+    - objective: What will be covered
+    - content: Main teaching points
+    - demonstration: Practical example
+    - summary: Key takeaways
+    - cta: Next step or exercise

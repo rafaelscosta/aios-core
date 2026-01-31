@@ -1,0 +1,270 @@
+# Team MCPM - Instituto Brasileiro de Cura Pelas Mãos
+# Equipe de agentes especializados para escola online de massoterapia
+
+name: team-mcpm
+version: 1.0.0
+description: Equipe completa de agentes para o Instituto Brasileiro de Cura Pelas Mãos
+
+metadata:
+  business: Instituto Brasileiro de Cura Pelas Mãos
+  niche: Massoterapia
+  type: Escola Online / Infoprodutos
+  created: 2026-01-31
+
+# ============================================================================
+# TEAM COMPOSITION
+# ============================================================================
+agents:
+  # Core Marketing & Sales Team
+  - id: copywriter
+    name: Luna
+    title: Copywriter & Persuasion Specialist
+    icon: ✍️
+    primary_use:
+      - Sales pages
+      - Email sequences
+      - Ad copy
+      - WhatsApp flows
+    file: agents/copywriter.md
+
+  - id: launch-manager
+    name: Victor
+    title: Launch Manager & Campaign Strategist
+    icon: 🚀
+    primary_use:
+      - Product launches
+      - Campaign strategy
+      - Launch timelines
+      - Funnel design
+    file: agents/launch-manager.md
+
+  - id: social-media
+    name: Nina
+    title: Social Media Manager & Content Strategist
+    icon: 📱
+    primary_use:
+      - Social media content
+      - Content calendars
+      - Instagram/TikTok/YouTube
+      - Engagement strategy
+    file: agents/social-media.md
+
+  # Content & Education Team
+  - id: content-creator
+    name: Maya
+    title: Content Creator & Course Designer
+    icon: 🎬
+    primary_use:
+      - Course creation
+      - Lesson scripts
+      - VSL scripts
+      - Webinar content
+    file: agents/content-creator.md
+
+  - id: student-success
+    name: Sofia
+    title: Student Success Manager & Experience Designer
+    icon: 🎓
+    primary_use:
+      - Student journey
+      - Onboarding
+      - Retention
+      - Testimonials
+    file: agents/student-success.md
+
+  # Technical Team
+  - id: automation-engineer
+    name: Theo
+    title: Automation Engineer & Integration Specialist
+    icon: ⚙️
+    primary_use:
+      - N8n workflows
+      - API integrations
+      - WhatsApp automation
+      - Tracking setup
+    file: agents/automation-engineer.md
+
+# ============================================================================
+# WORKFLOWS
+# ============================================================================
+workflows:
+  - id: product-launch
+    name: Product Launch
+    file: workflows/product-launch.yaml
+    agents:
+      - launch-manager (lead)
+      - copywriter
+      - content-creator
+      - automation-engineer
+      - social-media
+
+  - id: course-creation
+    name: Course Creation
+    file: workflows/course-creation.yaml
+    agents:
+      - content-creator (lead)
+      - copywriter
+      - student-success
+
+  - id: content-campaign
+    name: Content Campaign
+    file: workflows/content-campaign.yaml
+    agents:
+      - social-media (lead)
+      - content-creator
+      - copywriter
+
+# ============================================================================
+# COMMON USE CASES
+# ============================================================================
+use_cases:
+  - name: "Lançar novo produto"
+    description: "Lançar um novo curso ou mentoria"
+    workflow: product-launch
+    start_command: "*launch-product"
+    lead_agent: launch-manager
+
+  - name: "Criar novo curso"
+    description: "Desenvolver um novo curso online do zero"
+    workflow: course-creation
+    start_command: "*create-course"
+    lead_agent: content-creator
+
+  - name: "Escrever copy de vendas"
+    description: "Criar página de vendas, emails ou anúncios"
+    agents: [copywriter]
+    start_command: "*create-sales-page"
+
+  - name: "Criar sequência de emails"
+    description: "Desenvolver sequência de nutrição ou lançamento"
+    agents: [copywriter]
+    start_command: "*create-email-sequence"
+
+  - name: "Planejar conteúdo social"
+    description: "Criar calendário e posts para redes sociais"
+    agents: [social-media]
+    start_command: "*create-calendar"
+
+  - name: "Criar roteiro de aula"
+    description: "Escrever script para vídeo aula"
+    agents: [content-creator]
+    start_command: "*create-lesson"
+
+  - name: "Criar VSL"
+    description: "Desenvolver script de Video Sales Letter"
+    agents: [content-creator, copywriter]
+    start_command: "*create-vsl"
+
+  - name: "Configurar automação"
+    description: "Criar workflow no N8n ou integração"
+    agents: [automation-engineer]
+    start_command: "*create-workflow"
+
+  - name: "Criar jornada do aluno"
+    description: "Desenhar experiência completa do aluno"
+    agents: [student-success]
+    start_command: "*create-student-journey"
+
+  - name: "Criar onboarding"
+    description: "Desenvolver sequência de boas-vindas"
+    agents: [student-success, automation-engineer]
+    start_command: "*create-onboarding"
+
+# ============================================================================
+# AGENT COLLABORATION MATRIX
+# ============================================================================
+collaboration:
+  copywriter:
+    provides_to:
+      - launch-manager: "Copy para materiais de lançamento"
+      - social-media: "Copy para posts promocionais"
+      - automation-engineer: "Copy para automações e chatbots"
+    receives_from:
+      - content-creator: "Conteúdo base para refinar"
+      - student-success: "Insights sobre dores dos alunos"
+
+  launch-manager:
+    provides_to:
+      - all: "Estratégia e timeline de lançamento"
+    receives_from:
+      - copywriter: "Materiais de copy"
+      - content-creator: "Conteúdo de lançamento"
+      - automation-engineer: "Automações configuradas"
+      - social-media: "Campanha social"
+
+  content-creator:
+    provides_to:
+      - copywriter: "Conteúdo para refinar em copy"
+      - social-media: "Snippets para posts"
+      - launch-manager: "Conteúdo de lançamento"
+    receives_from:
+      - student-success: "Feedback dos alunos"
+
+  social-media:
+    provides_to:
+      - launch-manager: "Campanha social de lançamento"
+    receives_from:
+      - content-creator: "Conteúdo para adaptar"
+      - copywriter: "Copy para posts"
+
+  automation-engineer:
+    provides_to:
+      - all: "Automações e integrações funcionais"
+    receives_from:
+      - copywriter: "Copy para mensagens automatizadas"
+      - student-success: "Requisitos de jornada do aluno"
+      - launch-manager: "Requisitos de automação de lançamento"
+
+  student-success:
+    provides_to:
+      - content-creator: "Feedback para melhorar conteúdo"
+      - copywriter: "Insights sobre objeções e dores"
+      - automation-engineer: "Requisitos de jornada"
+    receives_from:
+      - content-creator: "Materiais para alunos"
+      - automation-engineer: "Automações de jornada"
+
+# ============================================================================
+# QUICK START GUIDE
+# ============================================================================
+quick_start: |
+  ## Como Usar Esta Equipe
+
+  ### Ativar um Agente
+  ```
+  @copywriter      - Para copy de vendas e emails
+  @launch-manager  - Para planejar lançamentos
+  @content-creator - Para criar cursos e aulas
+  @social-media    - Para conteúdo de redes sociais
+  @automation-engineer - Para automações e integrações
+  @student-success - Para experiência do aluno
+  ```
+
+  ### Iniciar um Workflow
+  ```
+  @launch-manager *launch-product  - Iniciar lançamento
+  @content-creator *create-course  - Criar novo curso
+  @social-media *create-campaign   - Campanha de conteúdo
+  ```
+
+  ### Comandos Frequentes
+  ```
+  *create-sales-page     - Página de vendas
+  *create-email-sequence - Sequência de emails
+  *create-vsl           - Video Sales Letter
+  *create-lesson        - Roteiro de aula
+  *create-calendar      - Calendário de conteúdo
+  *create-workflow      - Automação N8n
+  ```
+
+# ============================================================================
+# RESOURCES
+# ============================================================================
+resources:
+  data:
+    - mcpm-products.md
+    - mcpm-infrastructure.md
+  templates:
+    - vsl-script-tmpl.yaml
+    - email-sequence-tmpl.yaml
+    - lesson-script-tmpl.yaml

@@ -1,0 +1,385 @@
+# Product Launch Workflow
+# Instituto Brasileiro de Cura Pelas Mãos - Launch Orchestration
+
+name: product-launch
+version: 1.0.0
+description: Complete product launch workflow for infoproducts (courses, mentoring, events)
+
+trigger:
+  command: "*launch-product"
+  agents:
+    - launch-manager
+    - copywriter
+    - content-creator
+    - automation-engineer
+    - social-media
+
+metadata:
+  business: Instituto Brasileiro de Cura Pelas Mãos
+  launch_types:
+    - PLF (Product Launch Formula)
+    - Webinar Launch
+    - Challenge Launch
+    - Flash Sale
+    - Evergreen Funnel
+  platforms:
+    sales: Hotmart
+    email: ActiveCampaign
+    automation: N8n
+    ads: Meta Ads, Google Ads
+
+# ============================================================================
+# PHASE 1: PLANNING (2-4 weeks before launch)
+# ============================================================================
+phases:
+  - id: planning
+    name: "Phase 1: Planning"
+    duration: "2-4 weeks before launch"
+    lead_agent: launch-manager
+
+    steps:
+      - id: define-offer
+        agent: launch-manager
+        action: Define offer and pricing
+        command: "*create-launch-plan"
+        outputs:
+          - launch-plan.md
+          - offer-structure.md
+
+      - id: create-timeline
+        agent: launch-manager
+        action: Create launch timeline
+        command: "*create-timeline"
+        depends_on: [define-offer]
+        outputs:
+          - launch-timeline.md
+          - milestones.md
+
+      - id: design-funnel
+        agent: launch-manager
+        action: Design launch funnel
+        command: "*create-funnel"
+        depends_on: [define-offer]
+        outputs:
+          - funnel-structure.md
+
+      - id: plan-content
+        agent: content-creator
+        action: Plan launch content (VSL, webinar, etc.)
+        command: "*create-course-outline"
+        depends_on: [define-offer]
+        outputs:
+          - content-outline.md
+
+    completion:
+      checklist:
+        - Offer and pricing defined
+        - Timeline with milestones created
+        - Funnel structure designed
+        - Content plan ready
+      next_phase: content-creation
+
+# ============================================================================
+# PHASE 2: CONTENT CREATION (1-3 weeks before launch)
+# ============================================================================
+  - id: content-creation
+    name: "Phase 2: Content Creation"
+    duration: "1-3 weeks before launch"
+    lead_agent: content-creator
+
+    steps:
+      - id: create-vsl
+        agent: content-creator
+        action: Create VSL or webinar script
+        command: "*create-vsl"
+        outputs:
+          - vsl-script.md
+
+      - id: create-sales-copy
+        agent: copywriter
+        action: Create sales page copy
+        command: "*create-sales-page"
+        outputs:
+          - sales-page-copy.md
+
+      - id: create-email-sequence
+        agent: copywriter
+        action: Create launch email sequence
+        command: "*create-launch-emails"
+        outputs:
+          - launch-emails.md
+
+      - id: create-ad-copy
+        agent: copywriter
+        action: Create ad copy for Meta/Google
+        command: "*create-ad-copy"
+        outputs:
+          - ad-copy.md
+
+      - id: create-social-content
+        agent: social-media
+        action: Create social media campaign
+        command: "*create-calendar"
+        outputs:
+          - social-calendar.md
+
+    completion:
+      checklist:
+        - VSL/webinar script complete
+        - Sales page copy ready
+        - Email sequence written
+        - Ad copy created
+        - Social content planned
+      next_phase: automation-setup
+
+# ============================================================================
+# PHASE 3: AUTOMATION SETUP (1 week before launch)
+# ============================================================================
+  - id: automation-setup
+    name: "Phase 3: Automation Setup"
+    duration: "1 week before launch"
+    lead_agent: automation-engineer
+
+    steps:
+      - id: setup-hotmart
+        agent: automation-engineer
+        action: Configure Hotmart product and checkout
+        command: "*integrate-hotmart"
+        outputs:
+          - hotmart-config.md
+
+      - id: setup-email-automation
+        agent: automation-engineer
+        action: Setup ActiveCampaign sequences
+        command: "*integrate-activecampaign"
+        outputs:
+          - activecampaign-setup.md
+
+      - id: setup-n8n-workflows
+        agent: automation-engineer
+        action: Create N8n automation workflows
+        command: "*create-workflow"
+        outputs:
+          - n8n-workflows.md
+
+      - id: setup-tracking
+        agent: automation-engineer
+        action: Configure tracking and pixels
+        command: "*setup-tracking"
+        outputs:
+          - tracking-setup.md
+
+      - id: setup-whatsapp
+        agent: automation-engineer
+        action: Setup WhatsApp automation
+        command: "*integrate-whatsapp"
+        outputs:
+          - whatsapp-automation.md
+
+    completion:
+      checklist:
+        - Hotmart product configured
+        - Email automations active
+        - N8n workflows running
+        - Tracking pixels installed
+        - WhatsApp automation ready
+      next_phase: pre-launch
+
+# ============================================================================
+# PHASE 4: PRE-LAUNCH (3-7 days before launch)
+# ============================================================================
+  - id: pre-launch
+    name: "Phase 4: Pre-Launch"
+    duration: "3-7 days before launch"
+    lead_agent: launch-manager
+
+    steps:
+      - id: test-funnel
+        agent: launch-manager
+        action: Test complete funnel end-to-end
+        command: "*create-checklist"
+        outputs:
+          - test-results.md
+
+      - id: warm-audience
+        agent: social-media
+        action: Execute warm-up content
+        command: "*create-post"
+        outputs:
+          - warmup-posts.md
+
+      - id: activate-ads
+        agent: launch-manager
+        action: Activate pre-launch ads
+        outputs:
+          - ad-activation.md
+
+    completion:
+      checklist:
+        - Funnel tested and working
+        - Audience warmed up
+        - Ads activated
+        - Team briefed
+      next_phase: launch
+
+# ============================================================================
+# PHASE 5: LAUNCH (Cart Open - 3-7 days)
+# ============================================================================
+  - id: launch
+    name: "Phase 5: Launch"
+    duration: "3-7 days (cart open)"
+    lead_agent: launch-manager
+
+    steps:
+      - id: open-cart
+        agent: launch-manager
+        action: Open cart and activate all sequences
+        outputs:
+          - cart-open-confirmation.md
+
+      - id: daily-monitoring
+        agent: launch-manager
+        action: Monitor metrics daily
+        command: "*track-metrics"
+        outputs:
+          - daily-metrics.md
+
+      - id: real-time-support
+        agent: student-success
+        action: Provide real-time support
+        outputs:
+          - support-log.md
+
+      - id: engagement-boost
+        agent: social-media
+        action: Daily social engagement
+        command: "*create-stories"
+        outputs:
+          - daily-stories.md
+
+    completion:
+      checklist:
+        - Cart opened successfully
+        - Metrics tracked daily
+        - Support provided
+        - Engagement maintained
+      next_phase: post-launch
+
+# ============================================================================
+# PHASE 6: POST-LAUNCH (After cart closes)
+# ============================================================================
+  - id: post-launch
+    name: "Phase 6: Post-Launch"
+    duration: "1-2 weeks after launch"
+    lead_agent: launch-manager
+
+    steps:
+      - id: close-cart
+        agent: launch-manager
+        action: Close cart and final urgency
+        outputs:
+          - cart-close.md
+
+      - id: onboard-students
+        agent: student-success
+        action: Onboard new students
+        command: "*create-onboarding"
+        outputs:
+          - onboarding-sequence.md
+
+      - id: analyze-results
+        agent: launch-manager
+        action: Create post-mortem analysis
+        command: "*create-post-mortem"
+        outputs:
+          - post-mortem.md
+
+      - id: collect-testimonials
+        agent: student-success
+        action: Collect testimonials
+        command: "*create-testimonial-flow"
+        outputs:
+          - testimonials.md
+
+    completion:
+      checklist:
+        - Cart closed
+        - Students onboarded
+        - Post-mortem completed
+        - Testimonials collected
+        - Learnings documented
+
+# ============================================================================
+# WORKFLOW DIAGRAM
+# ============================================================================
+diagram: |
+  ```mermaid
+  graph TD
+      subgraph "Phase 1: Planning"
+          A[Define Offer] --> B[Create Timeline]
+          A --> C[Design Funnel]
+          A --> D[Plan Content]
+      end
+
+      subgraph "Phase 2: Content Creation"
+          E[Create VSL] --> F[Sales Copy]
+          F --> G[Email Sequence]
+          G --> H[Ad Copy]
+          H --> I[Social Content]
+      end
+
+      subgraph "Phase 3: Automation"
+          J[Setup Hotmart] --> K[Email Automation]
+          K --> L[N8n Workflows]
+          L --> M[Tracking]
+          M --> N[WhatsApp]
+      end
+
+      subgraph "Phase 4: Pre-Launch"
+          O[Test Funnel] --> P[Warm Audience]
+          P --> Q[Activate Ads]
+      end
+
+      subgraph "Phase 5: Launch"
+          R[Open Cart] --> S[Daily Monitoring]
+          S --> T[Support]
+          T --> U[Engagement]
+      end
+
+      subgraph "Phase 6: Post-Launch"
+          V[Close Cart] --> W[Onboard Students]
+          W --> X[Analyze Results]
+          X --> Y[Collect Testimonials]
+      end
+
+      D --> E
+      I --> J
+      N --> O
+      Q --> R
+      U --> V
+  ```
+
+# ============================================================================
+# KPIs & METRICS
+# ============================================================================
+kpis:
+  traffic:
+    - Total visitors
+    - Cost per click (CPC)
+    - Click-through rate (CTR)
+  conversion:
+    - Page conversion rate
+    - Email open rate
+    - Email click rate
+    - Sales page conversion
+    - Checkout conversion
+  revenue:
+    - Total revenue
+    - Average order value
+    - Cost per acquisition (CPA)
+    - Return on ad spend (ROAS)
+  engagement:
+    - Webinar registration rate
+    - Webinar attendance rate
+    - Email engagement
+    - Social engagement
