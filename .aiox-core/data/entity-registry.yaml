@@ -12789,6 +12789,9 @@ entities:
         - network
       usedBy: []
       dependencies: []
+      externalDeps: []
+      plannedDeps: []
+      lifecycle: production
       adaptability:
         score: 0.4
         constraints: []

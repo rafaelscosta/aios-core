@@ -24,6 +24,7 @@ const fs = require('fs');
 const path = require('path');
 const { randomUUID } = require('crypto');
 const EventEmitter = require('events');
+const { atomicWriteSync } = require(path.resolve(__dirname, '../synapse/utils/atomic-write'));
 
 // ═══════════════════════════════════════════════════════════════════════════════════
 //                              CONSTANTS
@@ -138,6 +139,10 @@ class AgentMeshNetwork extends EventEmitter {
     this._writeChain = Promise.resolve();
 
     this._started = false;
+
+    if (this.options.autoStart) {
+      this.startHeartbeat();
+    }
   }
 
   // ═══════════════════════════════════════════════════════════════════════════════
@@ -656,6 +661,12 @@ class AgentMeshNetwork extends EventEmitter {
     const activePeers = Array.from(this.peers.values())
       .filter(p => p.state === PeerState.ACTIVE).length;
     const partitions = this.detectPartitions();
+
+    if (partitions.length > 1) {
+      this.stats.partitionsDetected++;
+      this._emitSafe(MeshEvent.PARTITION_DETECTED, { partitions });
+    }
+
     const totalQueuedMessages = Array.from(this.queues.values())
       .reduce((sum, q) => sum + q.length, 0);
 
@@ -714,11 +725,6 @@ class AgentMeshNetwork extends EventEmitter {
       if (component.length > 0) {
         partitions.push(component.sort());
       }
-    }
-
-    if (partitions.length > 1) {
-      this.stats.partitionsDetected++;
-      this._emitSafe(MeshEvent.PARTITION_DETECTED, { partitions });
     }
 
     return partitions;
@@ -886,7 +892,7 @@ class AgentMeshNetwork extends EventEmitter {
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+    atomicWriteSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
   }
 
   // ═══════════════════════════════════════════════════════════════════════════════
@@ -911,6 +917,7 @@ class AgentMeshNetwork extends EventEmitter {
     const toPeer = this.peers.get(msg.to);
     if (toPeer) {
       toPeer.messageCount++;
+      this._updateLastSeen(msg.to);
     }
 
     this.stats.messagesReceived++;
@@ -986,8 +993,22 @@ class AgentMeshNetwork extends EventEmitter {
   _updateLastSeen(agentId) {
     const peer = this.peers.get(agentId);
     if (peer) {
+      const wasInactive = peer.state !== PeerState.ACTIVE;
       peer.lastSeen = Date.now();
       peer.state = PeerState.ACTIVE;
+
+      if (wasInactive) {
+        if (!this.adjacency.has(agentId)) {
+          this.adjacency.set(agentId, new Set());
+        }
+        for (const [otherId, otherPeer] of this.peers) {
+          if (otherId !== agentId && otherPeer.state === PeerState.ACTIVE) {
+            this.adjacency.get(agentId).add(otherId);
+            this.adjacency.get(otherId)?.add(agentId);
+          }
+        }
+        this._drainQueue(agentId);
+      }
     }
   }
 
@@ -1057,8 +1078,8 @@ class AgentMeshNetwork extends EventEmitter {
 
   /** @private */
   _schedulePersist() {
-    this._writeChain = this._writeChain.then(() => this.save()).catch(() => {
-      // Falha silenciosa na persistencia
+    this._writeChain = this._writeChain.then(() => this.save()).catch((error) => {
+      this._emitSafe('error', new Error(`Failed to persist mesh topology: ${error.message}`));
     });
   }
 

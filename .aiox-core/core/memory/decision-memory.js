@@ -28,6 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const EventEmitter = require('events');
+const { atomicWriteSync } = require(path.resolve(__dirname, '../synapse/utils/atomic-write'));
 
 // ═══════════════════════════════════════════════════════════════════════════════════
 //                              CONFIGURATION
@@ -178,7 +179,7 @@ class DecisionMemory extends EventEmitter {
       patterns: this.patterns,
     };
 
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+    atomicWriteSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
   }
 
   /**
