@@ -8,9 +8,9 @@
 # - File types for categorization
 #
 version: 5.0.3
-generated_at: "2026-03-07T02:05:52.403Z"
+generated_at: "2026-03-10T14:29:14.420Z"
 generator: scripts/generate-install-manifest.js
-file_count: 1090
+file_count: 1091
 files:
   - path: cli/commands/config/index.js
     hash: sha256:25c4b9bf4e0241abf7754b55153f49f1a214f1fb5fe904a576675634cb7b3da9
@@ -1040,6 +1040,10 @@ files:
     hash: sha256:d9805ce445661a3a2d9e6c73bf35cbd1bc2403419825442cd7b8f01cc1409cb3
     type: core
     size: 9179
+  - path: core/resilience/agent-immortality.js
+    hash: sha256:89ae4bac066088e76071cfc9b391418e9eba804bcc2b2f943edb1ce38974735c
+    type: core
+    size: 37573
   - path: core/session/context-detector.js
     hash: sha256:5537563d5dfc613e16fd610c9e1407e7811c4f19745a78a4fc81c34af20000f4
     type: core
