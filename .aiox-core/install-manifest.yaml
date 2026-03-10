@@ -8,9 +8,9 @@
 # - File types for categorization
 #
 version: 5.0.3
-generated_at: "2026-03-07T02:05:52.403Z"
+generated_at: "2026-03-10T14:29:07.529Z"
 generator: scripts/generate-install-manifest.js
-file_count: 1090
+file_count: 1091
 files:
   - path: cli/commands/config/index.js
     hash: sha256:25c4b9bf4e0241abf7754b55153f49f1a214f1fb5fe904a576675634cb7b3da9
@@ -236,6 +236,10 @@ files:
     hash: sha256:701102a519457938d5b9187b75a1f97d85cb5466cef23bce5edfb48b34c69ab8
     type: core
     size: 10891
+  - path: core/communication/agent-mesh-network.js
+    hash: sha256:9149abe1f1cc874d8c5d48d4e00846c617eaf416c93bc0f075a78def17b1e99d
+    type: core
+    size: 36059
   - path: core/config/config-cache.js
     hash: sha256:527a788cbe650aa6b13d1101ebc16419489bfef20b2ee93042f6eb6a51e898e9
     type: core
