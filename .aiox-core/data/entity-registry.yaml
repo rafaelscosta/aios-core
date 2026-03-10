@@ -1,7 +1,7 @@
 metadata:
   version: 1.0.0
-  lastUpdated: '2026-03-06T11:53:37.887Z'
-  entityCount: 745
+  lastUpdated: '2026-03-10T14:29:34.029Z'
+  entityCount: 746
   checksumAlgorithm: sha256
   resolutionRate: 100
 entities:
@@ -12778,6 +12778,22 @@ entities:
         extensionPoints: []
       checksum: sha256:dd025894f8f0d3bd22a147dbc0debef8b83e96f3c59483653404b3cd5a01d5aa
       lastVerified: '2026-03-06T11:53:37.512Z'
+    agent-immortality:
+      path: .aiox-core/core/resilience/agent-immortality.js
+      layer: L1
+      type: module
+      purpose: Entity at .aiox-core/core/resilience/agent-immortality.js
+      keywords:
+        - agent
+        - immortality
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.4
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:89ae4bac066088e76071cfc9b391418e9eba804bcc2b2f943edb1ce38974735c
+      lastVerified: '2026-03-10T14:29:34.026Z'
   agents:
     aiox-master:
       path: .aiox-core/development/agents/aiox-master.md
