@@ -1,8 +1,8 @@
-# Contribuindo com o Synkra AIOX
+# Contribuindo com o Synkra AIOS
 
 > **[English Version](../../CONTRIBUTING.md)**
 
-Bem-vindo ao AIOX! Obrigado pelo seu interesse em contribuir. Este guia vai ajudá-lo a entender nosso fluxo de desenvolvimento, processo de contribuição e como submeter suas alterações.
+Bem-vindo ao AIOS! Obrigado pelo seu interesse em contribuir. Este guia vai ajudá-lo a entender nosso fluxo de desenvolvimento, processo de contribuição e como submeter suas alterações.
 
 ## Sumário
 
@@ -29,11 +29,11 @@ Bem-vindo ao AIOX! Obrigado pelo seu interesse em contribuir. Este guia vai ajud
 
 ```bash
 # Faça o fork pela interface do GitHub, depois clone seu fork
-git clone https://github.com/SEU_USUARIO/aiox-core.git
-cd aiox-core
+git clone https://github.com/SEU_USUARIO/aios-core.git
+cd aios-core
 
 # Adicione o remote upstream
-git remote add upstream https://github.com/SynkraAI/aiox-core.git
+git remote add upstream https://github.com/SynkraAI/aios-core.git
 ```
 
 ### 2. Configure o Ambiente de Desenvolvimento
@@ -146,7 +146,7 @@ Agents são personas de IA com expertise e comandos específicos.
 ### Localização dos Arquivos de Agent
 
 ```text
-.aiox-core/development/agents/seu-agent.md
+.aios-core/development/agents/seu-agent.md
 ```
 
 ### Estrutura Obrigatória do Agent
@@ -220,7 +220,7 @@ Tasks são workflows executáveis que os agents podem rodar.
 ### Localização dos Arquivos de Task
 
 ```text
-.aiox-core/development/tasks/sua-task.md
+.aios-core/development/tasks/sua-task.md
 ```
 
 ### Estrutura Obrigatória da Task
@@ -321,7 +321,7 @@ tasks:
 ### Recursos sobre Squads
 
 - [Guia de Squads](docs/guides/squads-guide.md) - Documentação completa
-- [Discussões sobre Squads](https://github.com/SynkraAI/aiox-core/discussions/categories/ideas) - Compartilhe ideias
+- [Discussões sobre Squads](https://github.com/SynkraAI/aios-core/discussions/categories/ideas) - Compartilhe ideias
 
 ---
 
@@ -425,8 +425,8 @@ O AIOS implementa uma estratégia de **Defesa em Profundidade** com 3 camadas de
 
 ### Organização de Arquivos
 
-```
-.aiox-core/
+```text
+.aios-core/
 ├── development/
 │   ├── agents/      # Definições de agents
 │   ├── tasks/       # Workflows de tasks
@@ -525,23 +525,23 @@ Correções comuns:
 
 ## Obtendo Ajuda
 
-- **GitHub Issues:** [Abra uma issue](https://github.com/SynkraAI/aiox-core/issues)
-- **Discussões:** [Inicie uma discussão](https://github.com/SynkraAI/aiox-core/discussions)
-- **Comunidade:** [Discussões](https://github.com/SynkraAI/aiox-core/discussions)
+- **GitHub Issues:** [Abra uma issue](https://github.com/SynkraAI/aios-core/issues)
+- **Discussões:** [Inicie uma discussão](https://github.com/SynkraAI/aios-core/discussions)
+- **Comunidade:** [Discussões](https://github.com/SynkraAI/aios-core/discussions)
 
 ---
 
 ## Trabalhando com o Pro
 
-O AIOX usa um modelo Open Core com um git submodule privado `pro/`.
+O AIOS usa um modelo Open Core com um git submodule privado `pro/`.
 
 ### Para Contribuidores Open-Source
 
 **Você NÃO precisa do submodule pro/.** O clone padrão funciona perfeitamente:
 
 ```bash
-git clone https://github.com/SynkraAI/aiox-core.git
-cd aiox-core
+git clone https://github.com/SynkraAI/aios-core.git
+cd aios-core
 npm install && npm test  # Todos os testes passam sem o pro/
 ```
 
@@ -551,13 +551,13 @@ O diretório `pro/` simplesmente não existirá no seu clone — isso é esperad
 
 ```bash
 # Clone com submodule
-git clone --recurse-submodules https://github.com/SynkraAI/aiox-core.git
+git clone --recurse-submodules https://github.com/SynkraAI/aios-core.git
 
 # Ou adicione a um clone existente
 git submodule update --init pro
 ```
 
-**Ordem de push:** Sempre faça push das alterações do `pro/` primeiro, depois do `aiox-core`.
+**Ordem de push:** Sempre faça push das alterações do `pro/` primeiro, depois do `aios-core`.
 
 ### Futuro: Configuração via CLI
 
@@ -579,4 +579,4 @@ Para o guia completo de workflow de desenvolvimento, veja [Pro Developer Workflo
 
 ---
 
-**Obrigado por contribuir com o Synkra AIOX!**
+**Obrigado por contribuir com o Synkra AIOS!**
