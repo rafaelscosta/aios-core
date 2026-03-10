@@ -1,7 +1,7 @@
 metadata:
   version: 1.0.0
-  lastUpdated: '2026-03-06T11:53:37.887Z'
-  entityCount: 745
+  lastUpdated: '2026-03-10T14:29:32.612Z'
+  entityCount: 746
   checksumAlgorithm: sha256
   resolutionRate: 100
 entities:
@@ -12778,6 +12778,23 @@ entities:
         extensionPoints: []
       checksum: sha256:dd025894f8f0d3bd22a147dbc0debef8b83e96f3c59483653404b3cd5a01d5aa
       lastVerified: '2026-03-06T11:53:37.512Z'
+    agent-mesh-network:
+      path: .aiox-core/core/communication/agent-mesh-network.js
+      layer: L1
+      type: module
+      purpose: Entity at .aiox-core/core/communication/agent-mesh-network.js
+      keywords:
+        - agent
+        - mesh
+        - network
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.4
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:9149abe1f1cc874d8c5d48d4e00846c617eaf416c93bc0f075a78def17b1e99d
+      lastVerified: '2026-03-10T14:29:32.610Z'
   agents:
     aiox-master:
       path: .aiox-core/development/agents/aiox-master.md
