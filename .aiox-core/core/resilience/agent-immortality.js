@@ -28,6 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const EventEmitter = require('events');
+const { atomicWriteSync } = require('../synapse/utils/atomic-write');
 
 // ═══════════════════════════════════════════════════════════════════════════════════
 //                              CONSTANTS
@@ -454,6 +455,30 @@ class AgentImmortalityProtocol extends EventEmitter {
       revivalState = latestSnapshot?.state ?? null;
     }
 
+    // Fail if no recovery source available
+    if (revivalState === null) {
+      const failRecord = {
+        id: generateId(),
+        agentId,
+        timestamp: now,
+        method: revivalMethod,
+        snapshotId: latestSnapshot?.id ?? null,
+        previousStatus: AgentStatus.DEAD,
+        restoredState: false,
+        errorCount: agent.errorCount,
+      };
+      agent.revivalHistory.push(failRecord);
+      // Agent stays DEAD — no state to restore
+      return {
+        success: false,
+        agentId,
+        method: revivalMethod,
+        reason: 'no-recovery-source',
+        message: `Agent "${agentId}" has no snapshot or custom revivalFn to restore from`,
+        timestamp: now,
+      };
+    }
+
     const revivalRecord = {
       id: generateId(),
       agentId,
@@ -461,7 +486,7 @@ class AgentImmortalityProtocol extends EventEmitter {
       method: revivalMethod,
       snapshotId: latestSnapshot?.id ?? null,
       previousStatus: AgentStatus.DEAD,
-      restoredState: revivalState !== null,
+      restoredState: true,
       errorCount: agent.errorCount,
     };
 
@@ -473,7 +498,7 @@ class AgentImmortalityProtocol extends EventEmitter {
     this.emit(Events.REVIVAL_COMPLETE, {
       agentId,
       record: deepClone(revivalRecord),
-      state: revivalState ? deepClone(revivalState) : null,
+      state: deepClone(revivalState),
     });
 
     return {
@@ -481,7 +506,7 @@ class AgentImmortalityProtocol extends EventEmitter {
       agentId,
       method: revivalMethod,
       snapshotId: latestSnapshot?.id ?? null,
-      state: revivalState ? deepClone(revivalState) : null,
+      state: deepClone(revivalState),
       timestamp: now,
     };
   }
@@ -694,7 +719,13 @@ class AgentImmortalityProtocol extends EventEmitter {
         data.dependencies[id] = [...deps];
       }
 
-      fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+      try {
+        atomicWriteSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+      } catch (err) {
+        if (this.listenerCount('error') > 0) {
+          this.emit('error', new Error(`Failed to save protocol state: ${err.message}`));
+        }
+      }
     });
 
     await this._saveQueue;
@@ -713,8 +744,37 @@ class AgentImmortalityProtocol extends EventEmitter {
       const data = JSON.parse(raw);
 
       if (data.schemaVersion !== this.config.schemaVersion) return null;
+
+      // Restore runtime state from persisted data
+      if (data.agents) {
+        for (const [id, saved] of Object.entries(data.agents)) {
+          if (!this.agents.has(id)) {
+            this.agents.set(id, {
+              id: saved.id,
+              status: saved.status ?? AgentStatus.REGISTERED,
+              config: { ...this.config },
+              heartbeats: [],
+              snapshots: [],
+              revivalHistory: [],
+              fingerprint: { metrics: [], baseline: null },
+              registeredAt: saved.registeredAt ?? Date.now(),
+              lastHeartbeat: saved.lastHeartbeat ?? null,
+              lastSnapshot: saved.lastSnapshot ?? null,
+              errorCount: saved.errorCount ?? 0,
+            });
+          }
+        }
+      }
+
+      if (data.dependencies) {
+        for (const [id, deps] of Object.entries(data.dependencies)) {
+          this._dependencies.set(id, [...deps]);
+        }
+      }
+
       return data;
-    } catch {
+    } catch (error) {
+      console.error(`[agent-immortality] Failed to load state from ${this.config.stateFile}: ${error.message}`);
       return null;
     }
   }
@@ -987,11 +1047,11 @@ class AgentImmortalityProtocol extends EventEmitter {
         }
 
         const filePath = path.join(dir, `${snapshot.id}.json`);
-        fs.writeFileSync(filePath, JSON.stringify(snapshot, null, 2), 'utf-8');
-      } catch {
+        atomicWriteSync(filePath, JSON.stringify(snapshot, null, 2), 'utf-8');
+      } catch (error) {
         // Falha silenciosa na persistencia — nao bloqueia o fluxo
         if (this.listenerCount('error') > 0) {
-          this.emit('error', new Error(`Failed to persist snapshot for agent "${agentId}"`));
+          this.emit('error', new Error(`Failed to persist snapshot for agent "${agentId}": ${error.message}`));
         }
       }
     });

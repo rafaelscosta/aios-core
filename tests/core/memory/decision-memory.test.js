@@ -6,7 +6,7 @@ const {
   Outcome,
   Events,
   CONFIG,
-} = require('../../../.aiox-core/core/memory/decision-memory');
+} = require(path.resolve(__dirname, '../../../.aiox-core/core/memory/decision-memory'));
 
 // ═══════════════════════════════════════════════════════════════════════════════════
 //                              TEST HELPERS

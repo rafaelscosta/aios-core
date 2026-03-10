@@ -28,6 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const EventEmitter = require('events');
+const { atomicWriteSync } = require('../synapse/utils/atomic-write');
 
 // ═══════════════════════════════════════════════════════════════════════════════════
 //                              CONFIGURATION
@@ -148,8 +149,9 @@ class DecisionMemory extends EventEmitter {
           this.patterns = data.patterns || [];
         }
       }
-    } catch {
-      // Corrupted file — start fresh
+    } catch (error) {
+      // Corrupted file — start fresh, log context
+      console.error(`[decision-memory] Failed to load ${this.config.decisionsJsonPath}: ${error.message}`);
       this.decisions = [];
       this.patterns = [];
     }
@@ -163,11 +165,6 @@ class DecisionMemory extends EventEmitter {
    */
   async save() {
     const filePath = path.resolve(this.projectRoot, this.config.decisionsJsonPath);
-    const dir = path.dirname(filePath);
-
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
 
     const data = {
       schemaVersion: this.config.schemaVersion,
@@ -178,7 +175,15 @@ class DecisionMemory extends EventEmitter {
       patterns: this.patterns,
     };
 
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+    try {
+      atomicWriteSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+    } catch (error) {
+      const msg = `Failed to save decisions to ${this.config.decisionsJsonPath}: ${error.message}`;
+      if (this.listenerCount('error') > 0) {
+        this.emit('error', new Error(msg));
+      }
+      throw new Error(msg);
+    }
   }
 
   /**
@@ -252,6 +257,9 @@ class DecisionMemory extends EventEmitter {
     } else if (outcome === Outcome.FAILURE) {
       decision.confidence = Math.max(this.config.minConfidence, decision.confidence - 0.3);
     }
+
+    // Recompute patterns now that outcome is known
+    this._detectPatterns(decision);
 
     this.emit(Events.OUTCOME_UPDATED, decision);
     return decision;

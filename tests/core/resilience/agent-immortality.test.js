@@ -11,8 +11,9 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 
-const AgentImmortalityProtocol = require('../../../.aiox-core/core/resilience/agent-immortality');
-const { Events, AgentStatus, DEFAULT_CONFIG } = require('../../../.aiox-core/core/resilience/agent-immortality');
+const modulePath = path.resolve(__dirname, '../../../.aiox-core/core/resilience/agent-immortality');
+const AgentImmortalityProtocol = require(modulePath);
+const { Events, AgentStatus, DEFAULT_CONFIG } = require(modulePath);
 
 // ═══════════════════════════════════════════════════════════════════════════════════
 //                              HELPERS
@@ -342,6 +343,7 @@ describe('Agent Immortality Protocol (Story #568)', () => {
     });
 
     it('should trim heartbeat history to prevent unbounded growth', () => {
+      // Heartbeat history is trimmed to 2 * fingerprintWindowSize (i.e., 2 * 5 = 10)
       protocol.registerAgent('agent-1', { fingerprintWindowSize: 5 });
       for (let i = 0; i < 15; i++) {
         jest.advanceTimersByTime(100);
@@ -982,8 +984,9 @@ describe('Agent Immortality Protocol (Story #568)', () => {
       const handler = jest.fn();
       protocol.on(Events.CASCADE_RISK, handler);
       protocol.getCascadeRisk('agent-1');
-      // 1 dependent + dead = high (nao critical)
-      // high emite cascade-risk
+      // 1 dependent + dead = high (not critical)
+      expect(handler).toHaveBeenCalledTimes(1);
+      expect(handler.mock.calls[0][0].riskLevel).toBe('high');
     });
 
     it('should not emit cascade-risk for low risk', () => {
@@ -1024,7 +1027,8 @@ describe('Agent Immortality Protocol (Story #568)', () => {
       jest.advanceTimersByTime(4000);
 
       const agent = protocol.agents.get('agent-1');
-      // Pode ter sido revivido automaticamente, mas deve ter passado por DEAD
+      // After auto-revival attempt, status may be ALIVE (if snapshot existed) or DEAD
+      expect([AgentStatus.DEAD, AgentStatus.ALIVE]).toContain(agent.status);
     });
 
     it('should mark suspect before death', () => {
@@ -1038,7 +1042,7 @@ describe('Agent Immortality Protocol (Story #568)', () => {
       jest.advanceTimersByTime(2000);
 
       const agent = protocol.agents.get('agent-1');
-      // O agente pode estar como SUSPECT
+      expect(agent.status).toBe(AgentStatus.SUSPECT);
     });
 
     it('should auto-revive dead agent', async () => {
@@ -1051,11 +1055,13 @@ describe('Agent Immortality Protocol (Story #568)', () => {
 
       jest.advanceTimersByTime(4000);
 
-      // Aguardar revival async
-      await jest.runAllTimersAsync().catch(() => {});
-      // Revival e assíncrono, pode precisar de mais ticks
+      // Allow async revival to complete
+      await jest.runAllTimersAsync();
       await Promise.resolve();
-      await Promise.resolve();
+
+      expect(revivalHandler).toHaveBeenCalledTimes(1);
+      const agent = protocol.agents.get('agent-1');
+      expect(agent.status).toBe(AgentStatus.ALIVE);
     });
 
     it('should not detect death if heartbeats are regular', () => {

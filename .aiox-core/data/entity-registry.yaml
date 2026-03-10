@@ -12782,12 +12782,22 @@ entities:
       path: .aiox-core/core/resilience/agent-immortality.js
       layer: L1
       type: module
-      purpose: Entity at .aiox-core/core/resilience/agent-immortality.js
+      purpose: Resilience protocol for heartbeat monitoring, state snapshots, anomaly detection, and automatic agent revival
       keywords:
         - agent
         - immortality
+        - resilience
+        - heartbeat
+        - snapshots
+        - anomaly-detection
+        - auto-revival
+        - self-healing
+        - health-score
       usedBy: []
       dependencies: []
+      externalDeps: []
+      plannedDeps: []
+      lifecycle: production
       adaptability:
         score: 0.4
         constraints: []
